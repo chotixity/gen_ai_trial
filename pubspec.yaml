@@ -38,6 +38,8 @@ dependencies:
   google_generative_ai: ^0.4.4
   file_picker: ^8.1.1
   record: ^5.1.2
+  injectable: ^2.4.4
+  get_it: ^7.7.0
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +51,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  injectable_generator: ^2.6.2
+  build_runner: ^2.4.12
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

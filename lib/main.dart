@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gen_ai_trial/di/injectable.dart';
+import 'package:gen_ai_trial/features/file_picker/file_picker.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -30,36 +34,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  final FilePickerHelper _filepicker = getIt();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                    prefixIcon: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.attach_file)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50))),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                prefixIcon: IconButton(
+                  onPressed: () {
+                    _filepicker.pickFiles();
+                  },
+                  icon: const Icon(Icons.attach_file),
+                ),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
