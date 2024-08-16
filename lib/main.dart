@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_ai_trial/di/injectable.dart';
-import 'package:gen_ai_trial/features/file_picker/file_picker.dart';
+import 'package:gen_ai_trial/features/file_picker/blocs/pick_files_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Google AI testing'),
+      home: BlocProvider(
+        create: (context) => PickFilesCubit(filePickerHelper: getIt()),
+        child: const MyHomePage(title: 'Google AI testing'),
+      ),
     );
   }
 }
@@ -34,7 +38,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FilePickerHelper _filepicker = getIt();
+  final TextEditingController _promptController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +53,17 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextFormField(
+              controller: _promptController,
+              maxLines: null,
+              textInputAction: TextInputAction.newline,
               decoration: InputDecoration(
+                hintText: 'Enter your prompt',
+                suffixIcon: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.send),
+                ),
                 prefixIcon: IconButton(
-                  onPressed: () {
-                    _filepicker.pickFiles();
-                  },
+                  onPressed: () => context.read<PickFilesCubit>().pickFiles(),
                   icon: const Icon(Icons.attach_file),
                 ),
                 border:
