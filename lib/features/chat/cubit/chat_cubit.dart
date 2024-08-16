@@ -15,7 +15,7 @@ class ChatCubit extends Cubit<ChatState> {
   List<Message> history = [];
 
   void sendMessage(Message message) async {
-    emit(const ChatState.loading());
+    emit(ChatState.loading(history: history));
 
     try {
       final response = await _chat.sendMessage(message: message);

@@ -34,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     constraints: BoxConstraints(
-                      maxWidth: MediaQuery.sizeOf(context).width * .6,
+                      maxWidth: MediaQuery.sizeOf(context).width * .8,
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),

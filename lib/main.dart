@@ -81,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text('an Error occurred there: $message'),
                   ),
                   loaded: (history) => ChatScreen(chatHistory: history),
+                  loading: (history) => ChatScreen(chatHistory: history),
                   orElse: () => const Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -93,14 +94,20 @@ class _MyHomePageState extends State<MyHomePage> {
               textInputAction: TextInputAction.newline,
               decoration: InputDecoration(
                 hintText: 'Enter your prompt',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    context.read<ChatCubit>().sendMessage(
-                          Message(text: _promptController.text, fromUser: true),
-                        );
-                    _promptController.clear();
-                  },
-                  icon: const Icon(Icons.send),
+                suffixIcon: BlocBuilder<ChatCubit, ChatState>(
+                  builder: (context, state) => state.maybeWhen(
+                      orElse: () => IconButton(
+                            onPressed: () {
+                              context.read<ChatCubit>().sendMessage(
+                                    Message(
+                                        text: _promptController.text,
+                                        fromUser: true),
+                                  );
+                              _promptController.clear();
+                            },
+                            icon: const Icon(Icons.send),
+                          ),
+                      loading: (history) => const CircularProgressIndicator()),
                 ),
                 prefixIcon: IconButton(
                   onPressed: () => context.read<PickFilesCubit>().pickFiles(),

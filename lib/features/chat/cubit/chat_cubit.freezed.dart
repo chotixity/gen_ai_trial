@@ -19,7 +19,7 @@ mixin _$ChatState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(List<Message> history) loading,
     required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) =>
@@ -27,7 +27,7 @@ mixin _$ChatState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(List<Message> history)? loading,
     TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) =>
@@ -35,7 +35,7 @@ mixin _$ChatState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(List<Message> history)? loading,
     TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -130,7 +130,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(List<Message> history) loading,
     required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
@@ -141,7 +141,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(List<Message> history)? loading,
     TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
@@ -152,7 +152,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(List<Message> history)? loading,
     TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -210,6 +210,8 @@ abstract class _$$LoadingImplCopyWith<$Res> {
   factory _$$LoadingImplCopyWith(
           _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
       __$$LoadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<Message> history});
 }
 
 /// @nodoc
@@ -222,60 +224,92 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? history = null,
+  }) {
+    return _then(_$LoadingImpl(
+      history: null == history
+          ? _value._history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<Message>,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+  const _$LoadingImpl({required final List<Message> history})
+      : _history = history;
+
+  final List<Message> _history;
+  @override
+  List<Message> get history {
+    if (_history is EqualUnmodifiableListView) return _history;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_history);
+  }
 
   @override
   String toString() {
-    return 'ChatState.loading()';
+    return 'ChatState.loading(history: $history)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$LoadingImpl &&
+            const DeepCollectionEquality().equals(other._history, _history));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_history));
+
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
+      __$$LoadingImplCopyWithImpl<_$LoadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(List<Message> history) loading,
     required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
-    return loading();
+    return loading(history);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(List<Message> history)? loading,
     TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loading?.call();
+    return loading?.call(history);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(List<Message> history)? loading,
     TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(history);
     }
     return orElse();
   }
@@ -319,7 +353,16 @@ class _$LoadingImpl implements _Loading {
 }
 
 abstract class _Loading implements ChatState {
-  const factory _Loading() = _$LoadingImpl;
+  const factory _Loading({required final List<Message> history}) =
+      _$LoadingImpl;
+
+  List<Message> get history;
+
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -398,7 +441,7 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(List<Message> history) loading,
     required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
@@ -409,7 +452,7 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(List<Message> history)? loading,
     TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
@@ -420,7 +463,7 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(List<Message> history)? loading,
     TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -550,7 +593,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(List<Message> history) loading,
     required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
@@ -561,7 +604,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(List<Message> history)? loading,
     TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
@@ -572,7 +615,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(List<Message> history)? loading,
     TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
