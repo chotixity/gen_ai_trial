@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_ai_trial/di/injectable.dart';
 import 'package:gen_ai_trial/features/chat/cubit/chat_cubit.dart';
 import 'package:gen_ai_trial/features/chat/models/message.dart';
+import 'package:gen_ai_trial/features/chat/ui/chat_screen.dart';
 import 'package:gen_ai_trial/features/chat/utils/chat.dart';
 import 'package:gen_ai_trial/features/file_picker/blocs/pick_files_cubit.dart';
 
@@ -49,6 +50,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _promptController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _promptController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +71,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Flexible(
+              child: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) => state.maybeWhen(
+                  loaded: (history) => ChatScreen(chatHistory: history),
+                  orElse: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            ),
             TextFormField(
               controller: _promptController,
               maxLines: null,
@@ -69,9 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'Enter your prompt',
                 suffixIcon: IconButton(
-                  onPressed: () => context.read<ChatCubit>().sendMessage(
-                        Message(text: _promptController.text, fromUser: true),
-                      ),
+                  onPressed: () {
+                    context.read<ChatCubit>().sendMessage(
+                          Message(text: _promptController.text, fromUser: true),
+                        );
+                    _promptController.clear();
+                  },
                   icon: const Icon(Icons.send),
                 ),
                 prefixIcon: IconButton(

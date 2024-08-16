@@ -20,7 +20,7 @@ mixin _$ChatState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Message response) loaded,
+    required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$ChatState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Message response)? loaded,
+    TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$ChatState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Message response)? loaded,
+    TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -131,7 +131,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Message response) loaded,
+    required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -142,7 +142,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Message response)? loaded,
+    TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -153,7 +153,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Message response)? loaded,
+    TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -248,7 +248,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Message response) loaded,
+    required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -259,7 +259,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Message response)? loaded,
+    TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -270,7 +270,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Message response)? loaded,
+    TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -328,9 +328,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Message response});
-
-  $MessageCopyWith<$Res> get response;
+  $Res call({List<Message> history});
 }
 
 /// @nodoc
@@ -346,38 +344,34 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? response = null,
+    Object? history = null,
   }) {
     return _then(_$LoadedImpl(
-      response: null == response
-          ? _value.response
-          : response // ignore: cast_nullable_to_non_nullable
-              as Message,
+      history: null == history
+          ? _value._history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<Message>,
     ));
-  }
-
-  /// Create a copy of ChatState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $MessageCopyWith<$Res> get response {
-    return $MessageCopyWith<$Res>(_value.response, (value) {
-      return _then(_value.copyWith(response: value));
-    });
   }
 }
 
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({required this.response});
+  const _$LoadedImpl({required final List<Message> history})
+      : _history = history;
 
+  final List<Message> _history;
   @override
-  final Message response;
+  List<Message> get history {
+    if (_history is EqualUnmodifiableListView) return _history;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_history);
+  }
 
   @override
   String toString() {
-    return 'ChatState.loaded(response: $response)';
+    return 'ChatState.loaded(history: $history)';
   }
 
   @override
@@ -385,12 +379,12 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            (identical(other.response, response) ||
-                other.response == response));
+            const DeepCollectionEquality().equals(other._history, _history));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, response);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_history));
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
@@ -405,10 +399,10 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Message response) loaded,
+    required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(response);
+    return loaded(history);
   }
 
   @override
@@ -416,10 +410,10 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Message response)? loaded,
+    TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(response);
+    return loaded?.call(history);
   }
 
   @override
@@ -427,12 +421,12 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Message response)? loaded,
+    TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(response);
+      return loaded(history);
     }
     return orElse();
   }
@@ -476,9 +470,9 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements ChatState {
-  const factory _Loaded({required final Message response}) = _$LoadedImpl;
+  const factory _Loaded({required final List<Message> history}) = _$LoadedImpl;
 
-  Message get response;
+  List<Message> get history;
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
@@ -557,7 +551,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Message response) loaded,
+    required TResult Function(List<Message> history) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -568,7 +562,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Message response)? loaded,
+    TResult? Function(List<Message> history)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -579,7 +573,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Message response)? loaded,
+    TResult Function(List<Message> history)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

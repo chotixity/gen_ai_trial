@@ -12,8 +12,17 @@ class ChatCubit extends Cubit<ChatState> {
         super(const ChatState.initial());
 
   late final Chat _chat;
+  List<Message> history = [];
 
-  void sendMessage(Message message) {
-    _chat.sendMessage(message: message);
+  void sendMessage(Message message) async {
+    emit(const ChatState.loading());
+
+    try {
+      final response = await _chat.sendMessage(message: message);
+      history.addAll([message, Message(text: response.text!, fromUser: false)]);
+      emit(ChatState.loaded(history: history));
+    } catch (e) {
+      emit(ChatState.error(e.toString()));
+    }
   }
 }

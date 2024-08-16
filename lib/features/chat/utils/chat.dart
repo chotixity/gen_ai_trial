@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:gen_ai_trial/features/chat/models/message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mime/mime.dart';
 
 @Injectable()
 class Chat {
