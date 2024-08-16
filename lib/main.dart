@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen_ai_trial/di/injectable.dart';
+import 'package:gen_ai_trial/features/chat/cubit/chat_cubit.dart';
+import 'package:gen_ai_trial/features/chat/models/message.dart';
+import 'package:gen_ai_trial/features/chat/utils/chat.dart';
 import 'package:gen_ai_trial/features/file_picker/blocs/pick_files_cubit.dart';
 
 void main() {
@@ -20,8 +23,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider(
-        create: (context) => PickFilesCubit(filePickerHelper: getIt()),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => PickFilesCubit(filePickerHelper: getIt()),
+          ),
+          BlocProvider(
+            create: (_) => ChatCubit(chat: getIt()),
+          )
+        ],
         child: const MyHomePage(title: 'Google AI testing'),
       ),
     );
@@ -59,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'Enter your prompt',
                 suffixIcon: IconButton(
-                  onPressed: () {},
+                  onPressed: () => context.read<ChatCubit>().sendMessage(
+                        Message(text: _promptController.text, fromUser: true),
+                      ),
                   icon: const Icon(Icons.send),
                 ),
                 prefixIcon: IconButton(
