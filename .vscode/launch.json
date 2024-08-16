@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+
+        {
+            "name": "gen_ai_trial",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define" ,"apiKey=AIzaSyBvJ_dz9m6eIKP7TCN8PLLzdRJfUbAQK6k"
+            ]
+        },
+        {
+            "name": "gen_ai_trial (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "gen_ai_trial (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

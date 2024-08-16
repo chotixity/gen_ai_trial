@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen_ai_trial/di/injectable.dart';
+import 'package:gen_ai_trial/features/chat/cubit/chat_cubit.dart';
+import 'package:gen_ai_trial/features/chat/models/message.dart';
+import 'package:gen_ai_trial/features/chat/ui/chat_screen.dart';
+import 'package:gen_ai_trial/features/chat/utils/chat.dart';
+import 'package:gen_ai_trial/features/file_picker/blocs/pick_files_cubit.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -15,7 +24,17 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Google AI testing'),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => PickFilesCubit(filePickerHelper: getIt()),
+          ),
+          BlocProvider(
+            create: (_) => ChatCubit(chat: getIt()),
+          )
+        ],
+        child: const MyHomePage(title: 'Google AI testing'),
+      ),
     );
   }
 }
@@ -30,36 +49,64 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final TextEditingController _promptController = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _promptController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                    prefixIcon: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.attach_file)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50))),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Flexible(
+              child: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) => state.maybeWhen(
+                  loaded: (history) => ChatScreen(chatHistory: history),
+                  orElse: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
               ),
-            ],
-          ),
-        ));
+            ),
+            TextFormField(
+              controller: _promptController,
+              maxLines: null,
+              textInputAction: TextInputAction.newline,
+              decoration: InputDecoration(
+                hintText: 'Enter your prompt',
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    context.read<ChatCubit>().sendMessage(
+                          Message(text: _promptController.text, fromUser: true),
+                        );
+                    _promptController.clear();
+                  },
+                  icon: const Icon(Icons.send),
+                ),
+                prefixIcon: IconButton(
+                  onPressed: () => context.read<PickFilesCubit>().pickFiles(),
+                  icon: const Icon(Icons.attach_file),
+                ),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
