@@ -74,6 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Flexible(
               child: BlocBuilder<ChatCubit, ChatState>(
                 builder: (context, state) => state.maybeWhen(
+                  initial: () => const Center(
+                    child: Text('Ask a Prompt to get started'),
+                  ),
+                  error: (message) => Center(
+                    child: Text('an Error occurred there: $message'),
+                  ),
                   loaded: (history) => ChatScreen(chatHistory: history),
                   orElse: () => const Center(
                     child: CircularProgressIndicator(),
