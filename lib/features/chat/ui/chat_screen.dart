@@ -24,6 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
             separatorBuilder: (context, index) => const SizedBox(
               height: 10,
             ),
+            physics: const BouncingScrollPhysics(),
             itemCount: widget.chatHistory.length,
             itemBuilder: (context, index) {
               return Row(
