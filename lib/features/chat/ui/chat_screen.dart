@@ -13,6 +13,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return widget.chatHistory.isEmpty

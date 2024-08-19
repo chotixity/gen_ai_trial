@@ -4,7 +4,6 @@ import 'package:gen_ai_trial/di/injectable.dart';
 import 'package:gen_ai_trial/features/chat/cubit/chat_cubit.dart';
 import 'package:gen_ai_trial/features/chat/models/message.dart';
 import 'package:gen_ai_trial/features/chat/ui/chat_screen.dart';
-import 'package:gen_ai_trial/features/chat/utils/chat.dart';
 import 'package:gen_ai_trial/features/file_picker/blocs/pick_files_cubit.dart';
 
 void main() {
