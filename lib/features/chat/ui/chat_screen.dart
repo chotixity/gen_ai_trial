@@ -24,6 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
             separatorBuilder: (context, index) => const SizedBox(
               height: 10,
             ),
+            physics: const BouncingScrollPhysics(),
             itemCount: widget.chatHistory.length,
             itemBuilder: (context, index) {
               return Row(
@@ -42,9 +43,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         color: widget.chatHistory[index].fromUser
                             ? Colors.green
                             : Colors.blue),
-                    child: Text(
+                    child: SelectableText(
                       widget.chatHistory[index].text,
-                      softWrap: true,
                     ),
                   ),
                 ],

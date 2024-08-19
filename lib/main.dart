@@ -89,7 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextFormField(
               controller: _promptController,
-              maxLines: null,
+              maxLines: 10,
+              minLines: 1,
               textInputAction: TextInputAction.newline,
               decoration: InputDecoration(
                 hintText: 'Enter your prompt',
