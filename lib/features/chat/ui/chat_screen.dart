@@ -42,9 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         color: widget.chatHistory[index].fromUser
                             ? Colors.green
                             : Colors.blue),
-                    child: Text(
+                    child: SelectableText(
                       widget.chatHistory[index].text,
-                      softWrap: true,
                     ),
                   ),
                 ],
